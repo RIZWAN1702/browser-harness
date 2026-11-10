@@ -30,6 +30,12 @@ Available interaction skills:
 Available domain skills:
 - `tiktok/upload.md`
 
+## Which Chrome it drives
+
+- **Default (`BU_CDP_PORT=9333` in `.env`)**: a dedicated automation Chrome (profile `~/.browser-harness/chrome`), auto-started by `chrome-debug.sh` on first use, even after a reboot. No Allow prompt, never touches the user's tabs. Logins persist in that profile; log in there once (auth wall: stop and ask the user).
+- **User's real Chrome**: remove `BU_CDP_PORT` from `.env`. Chrome 144+ then shows "Allow remote debugging?" on every new connection; the user must click Allow.
+- Calls time out after 30s (`BU_TIMEOUT`); a timeout on the first call usually means that Allow dialog is waiting.
+
 ## Tool call shape
 
 ```bash

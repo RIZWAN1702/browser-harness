@@ -57,6 +57,9 @@ def log(msg):
 def get_ws_url():
     if url := os.environ.get("BU_CDP_WS"):
         return url
+    if port := os.environ.get("BU_CDP_PORT"):  # dedicated Chrome from chrome-debug.sh: no Allow prompt
+        with urllib.request.urlopen(f"http://127.0.0.1:{port}/json/version", timeout=5) as r:
+            return json.load(r)["webSocketDebuggerUrl"]
     for base in PROFILES:
         try:
             port, path = (base / "DevToolsActivePort").read_text().strip().split("\n", 1)

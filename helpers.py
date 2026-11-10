@@ -25,6 +25,7 @@ INTERNAL = ("chrome://", "chrome-untrusted://", "devtools://", "chrome-extension
 
 def _send(req):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.settimeout(float(os.environ.get('BU_TIMEOUT', 30)))  # never hang forever
     s.connect(SOCK)
     s.sendall((json.dumps(req) + "\n").encode())
     data = b""

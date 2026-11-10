@@ -54,6 +54,8 @@ def ensure_daemon(wait=60.0, name=None, env=None):
         return
     import subprocess
 
+    if os.environ.get("BU_CDP_PORT") and not os.environ.get("BU_CDP_WS"):  # auto-start the dedicated Chrome
+        subprocess.run([os.path.join(os.path.dirname(os.path.abspath(__file__)), "chrome-debug.sh")], check=True, timeout=45)
     e = {**os.environ, **({"BU_NAME": name} if name else {}), **(env or {})}
     p = subprocess.Popen(
         ["uv", "run", "daemon.py"],
